@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Thai 2D / 3D Live</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  background:
+    radial-gradient(circle at top,#352600 0,#111 38%,#050505 100%);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.card{
+  width:100%;
+  max-width:480px;
+  background:rgba(15,15,15,.96);
+  border:1px solid #d5a62a;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+.header{
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #493a16;
+}
+
+.title{
+  font-size:22px;
+  font-weight:900;
+  color:#ffd84a;
+}
+
+.live{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  font-weight:bold;
+  color:#55ff77;
+}
+
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#20e85b;
+  box-shadow:0 0 12px #20e85b;
+}
+
+.main{
+  text-align:center;
+  padding:30px 20px;
+}
+
+.label{
+  color:#999;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.number{
+  font-size:82px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:8px;
+  color:#fff;
+  text-shadow:0 0 30px rgba(255,210,60,.35);
+}
+
+.status{
+  margin-top:12px;
+  color:#aaa;
+  font-size:12px;
+}
+
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:0 15px 15px;
+}
+
+.box{
+  background:#191919;
+  border:1px solid #302713;
+  border-radius:14px;
+  padding:14px;
+}
+
+.box small{
+  display:block;
+  color:#888;
+  font-size:10px;
+  margin-bottom:6px;
+}
+
+.box strong{
+  font-size:16px;
+}
+
+.results{
+  padding:0 15px 15px;
+}
+
+.results h3{
+  color:#ffd84a;
+  font-size:14px;
+  margin:8px 0 10px;
+}
+
+.result{
+  display:grid;
+  grid-template-columns:80px 1fr 60px;
+  padding:11px 12px;
+  margin-bottom:7px;
+  border-radius:10px;
+  background:#151515;
+  font-size:12px;
+}
+
+.result .time{
+  color:#999;
+}
+
+.result .set{
+  text-align:center;
+  color:#ccc;
+}
+
+.result .twod{
+  text-align:right;
+  color:#ffd84a;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.threed{
+  margin:5px 15px 20px;
+  padding:22px;
+  text-align:center;
+  border:1px solid #493a16;
+  border-radius:16px;
+  background:#121212;
+}
+
+.threed-title{
+  color:#ffd84a;
+  font-size:14px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.threed-number{
+  font-size:55px;
+  font-weight:900;
+  letter-spacing:5px;
+  color:#777;
+}
+
+.threed-note{
+  margin-top:8px;
+  color:#777;
+  font-size:11px;
+}
+
+.footer{
+  padding:13px 15px;
+  border-top:1px solid #292313;
+  display:flex;
+  justify-content:space-between;
+  color:#666;
+  font-size:10px;
+}
+
+@media(max-width:420px){
+  .number{
+    font-size:64px;
+  }
+
+  .title{
+    font-size:18px;
+  }
+
+  .result{
+    grid-template-columns:65px 1fr 50px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="header">
+    <div class="title">🇹🇭 THAI 2D / 3D</div>
+
+    <div class="live">
+      <span class="dot"></span>
+      LIVE
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="label">
+      CURRENT 2D
+    </div>
+
+    <div id="twod" class="number">
+      --
+    </div>
+
+    <div id="status" class="status">
+      Connecting...
+    </div>
+
+  </div>
+
+  <div class="info">
+
+    <div class="box">
+      <small>SET INDEX</small>
+      <strong id="set">--</strong>
+    </div>
+
+    <div class="box">
+      <small>VALUE</small>
+      <strong id="value">--</strong>
+    </div>
+
+    <div class="box">
+      <small>UPDATE TIME</small>
+      <strong id="time">--</strong>
+    </div>
+
+    <div class="box">
+      <small>DATE</small>
+      <strong id="date">--</strong>
+    </div>
+
+  </div>
+
+  <div class="results">
+
+    <h3>📊 TODAY'S RESULTS</h3>
+
+    <div id="results"></div>
+
+  </div>
+
+  <div class="threed">
+
+    <div class="threed-title">
+      🇹🇭 3D RESULT
+    </div>
+
+    <div class="threed-number">
+      ---
+    </div>
+
+    <div class="threed-note">
+      3D API will be connected in the next step
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span>Thai 2D / 3D Live</span>
+    <span>Auto Refresh 10s</span>
+  </div>
+
+</div>
+
+<script>
+
+const API =
+  "https://api.thaistock2d.com/live";
+
+async function loadData(){
+
+  try{
+
+    const response =
+      await fetch(API + "?t=" + Date.now());
+
+    if(!response.ok){
+      throw new Error("API Error");
+    }
+
+    const data =
+      await response.json();
+
+    const live =
+      data.live || {};
+
+    document.getElementById("twod").textContent =
+      live.twod || "--";
+
+    document.getElementById("set").textContent =
+      live.set || "--";
+
+    document.getElementById("value").textContent =
+      live.value || "--";
+
+    document.getElementById("time").textContent =
+      live.time ? live.time.split(" ")[1] : "--";
+
+    document.getElementById("date").textContent =
+      live.time ? live.time.split(" ")[0] : "--";
+
+    document.getElementById("status").textContent =
+      live.twod
+        ? "● Live market data"
+        : "Market closed";
+
+    const list =
+      document.getElementById("results");
+
+    list.innerHTML = "";
+
+    const results =
+      Array.isArray(data.result)
+        ? data.result
+        : [];
+
+    results.forEach(item => {
+
+      const row =
+        document.createElement("div");
+
+      row.className = "result";
+
+      row.innerHTML = `
+        <div class="time">
+          ${item.open_time || "--"}
+        </div>
+
+        <div class="set">
+          SET ${item.set || "--"}
+        </div>
+
+        <div class="twod">
+          ${item.twod || "--"}
+        </div>
+      `;
+
+      list.appendChild(row);
+
+    });
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("status").textContent =
+      "Unable to connect to live data";
+
+  }
+
+}
+
+loadData();
+
+setInterval(
+  loadData,
+  10000
+);
+
+</script>
+
+</body>
+</html>
