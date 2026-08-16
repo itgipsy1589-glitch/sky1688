@@ -773,6 +773,7 @@ function updateCountdown(){
 
 
 
+
 // Auto-updated Thai Lottery 3D data from Sanook.com
 const THAI_LOTTERY_3D = {
   firstPrize: "004615",
@@ -805,9 +806,8 @@ function updateThaiLottery3D() {
     </div>`;
   }
 }
-setTimeout(updateThaiLottery3D, 500);
-
 loadLiveData();
+setTimeout(updateThaiLottery3D, 1500);
 setInterval(loadLiveData,1000);
 setInterval(updateCountdown,1000);
 updateCountdown();
