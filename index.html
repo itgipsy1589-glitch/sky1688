@@ -654,6 +654,7 @@
 
 <script>
 const API2D="https://api.thaistock2d.com/live";
+const API2D_RESULT="https://api.thaistock2d.com/2d_result";
 
 async function loadLiveData(){
   try{
@@ -703,7 +704,7 @@ async function loadLiveData(){
       if(r.open_time==="12:01:00") dateMap[r.stock_date]["12:00"]=r.twod;
       if(r.open_time==="16:30:00") dateMap[r.stock_date]["16:30"]=r.twod;
     });
-    Object.keys(dateMap).sort().reverse().slice(0,5).forEach(date=>{
+    Object.keys(dateMap).sort().reverse().slice(0,3).forEach(date=>{
       const d=dateMap[date];
       histDiv.innerHTML+=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;padding:8px 0;border-bottom:1px solid #222;font-size:12px;">
         <div style="color:#888;">${date.slice(5)}</div>
@@ -729,22 +730,33 @@ async function loadLiveData(){
       }
     }
 
-    // 3D History Grid (cards with #1, #2, #3 style)
+    // 3D History Grid - 7 days from 2d_result API
     const threedGrid=document.getElementById("threed-history-grid");
     threedGrid.innerHTML="";
-    // Get unique dates with 16:30 results for 3D
-    const threedResults=results.filter(r=>r.open_time==="16:30:00").sort((a,b)=>b.stock_date.localeCompare(a.stock_date));
-    threedResults.slice(0,4).forEach((r,i)=>{
-      const setV=r.set||"";
-      const whole=setV.split(".")[0];
-      const td=whole.length>=3?whole.slice(-3):"---";
-      threedGrid.innerHTML+=`<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;position:relative;">
-        <div style="position:absolute;top:8px;right:8px;background:#e31837;color:#fff;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;">#${i+1}</div>
-        <div style="color:#888;font-size:11px;">${r.stock_date}</div>
-        <div style="color:#888;font-size:10px;">${r.open_time}</div>
-        <div style="color:#e31837;font-size:32px;font-weight:900;letter-spacing:4px;margin-top:8px;">${td}</div>
-      </div>`;
-    });
+    try{
+      const hist3dResp=await fetch(API2D_RESULT+"?t="+Date.now());
+      if(hist3dResp.ok){
+        const hist3dData=await hist3dResp.json();
+        if(Array.isArray(hist3dData)){
+          hist3dData.slice(0,7).forEach((day,i)=>{
+            const date=day.date||"--";
+            const children=day.child||[];
+            const r1630=children.find(c=>c.time==="16:30:00");
+            if(r1630){
+              const setV=r1630.set||"";
+              const whole=setV.split(".")[0];
+              const td=whole.length>=3?whole.slice(-3):"---";
+              threedGrid.innerHTML+=`<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;position:relative;">
+                <div style="position:absolute;top:8px;right:8px;background:#e31837;color:#fff;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;">#${i+1}</div>
+                <div style="color:#888;font-size:11px;">${date}</div>
+                <div style="color:#888;font-size:10px;">16:30:00</div>
+                <div style="color:#e31837;font-size:32px;font-weight:900;letter-spacing:4px;margin-top:8px;">${td}</div>
+              </div>`;
+            }
+          });
+        }
+      }
+    }catch(e3){console.error(e3);}
 
   }catch(e){
     console.error(e);
