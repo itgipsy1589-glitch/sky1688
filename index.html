@@ -617,9 +617,23 @@
     <div id="results"></div>
   </div>
   <div style="margin:5px 15px 20px;padding:22px;text-align:center;border:1px solid #493a16;border-radius:16px;background:#121212;">
-    <div style="color:#ffd84a;font-size:14px;font-weight:bold;margin-bottom:10px;">🇹🇭 3D RESULT</div>
-    <div style="font-size:55px;font-weight:900;letter-spacing:5px;color:#777;">---</div>
-    <div style="margin-top:8px;color:#777;font-size:11px;">3D updates daily</div>
+    <div style="color:#ffd84a;font-size:14px;font-weight:bold;margin-bottom:10px;">🇹🇭 3D LIVE</div>
+    <div id="threed" style="font-size:72px;font-weight:900;letter-spacing:8px;color:#fff;text-shadow:0 0 30px rgba(255,210,60,.35);">---</div>
+    <div id="threed-status" style="margin-top:8px;color:#777;font-size:11px;">● Live market data</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px;">
+      <div style="padding:12px;border-radius:10px;background:#1a1a1a;border:1px solid #333;">
+        <div style="color:#888;font-size:10px;">SET INDEX</div>
+        <div id="threed-set" style="color:#fff;font-size:16px;font-weight:bold;">--</div>
+      </div>
+      <div style="padding:12px;border-radius:10px;background:#1a1a1a;border:1px solid #333;">
+        <div style="color:#888;font-size:10px;">UPDATE TIME</div>
+        <div id="threed-time" style="color:#fff;font-size:16px;font-weight:bold;">--</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin:5px 15px 10px;padding:15px;border:1px solid #493a16;border-radius:12px;background:#121212;">
+    <div style="color:#ffd84a;font-size:13px;font-weight:bold;margin-bottom:10px;">📊 TODAY'S 3D RESULTS</div>
+    <div id="threed-results" style="max-height:200px;overflow-y:auto;"></div>
   </div>
   <div style="padding:13px 15px;border-top:1px solid #292313;display:flex;justify-content:space-between;color:#666;font-size:10px;">
     <span>Thai 2D / 3D Live</span>
@@ -654,6 +668,41 @@ async function loadData(){
     document.getElementById("status").textContent="Unable to connect to live data";
   }
 }
+async function load3D(){
+  try{
+    const response=await fetch("https://api.thaistock2d.com/live?t="+Date.now());
+    const data=await response.json();
+    const live=data.live||{};
+    const setVal=live.set||"--";
+    // 3D = last 3 digits of SET index
+    if(setVal!=="--" && setVal.indexOf(".")>-1){
+      const whole=setVal.split(".")[0];
+      document.getElementById("threed").textContent=whole.slice(-3);
+      document.getElementById("threed-set").textContent=setVal;
+      document.getElementById("threed-time").textContent=live.time?live.time.split(" ")[1]:"--";
+      document.getElementById("threed-status").textContent="● Live market data";
+    } else {
+      document.getElementById("threed").textContent="---";
+      document.getElementById("threed-status").textContent="Market closed";
+    }
+    const results=Array.isArray(data.result)?data.result:[];
+    const list3d=document.getElementById("threed-results");
+    list3d.innerHTML="";
+    results.forEach(item=>{
+      const setV=item.set||"";
+      const whole=setV.split(".")[0];
+      const td=whole.length>=3?whole.slice(-3):"--";
+      const row=document.createElement("div");
+      row.style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;";
+      row.innerHTML='<div style="color:#aaa;font-size:12px;">'+( item.open_time||"--")+'</div><div style="color:#888;font-size:12px;">SET '+setV+'</div><div style="color:#ffd84a;font-size:16px;font-weight:bold;">'+td+'</div>';
+      list3d.appendChild(row);
+    });
+  }catch(e){
+    document.getElementById("threed-status").textContent="Unable to connect";
+  }
+}
+load3D();
+setInterval(load3D,1000);
 loadData();
 setInterval(loadData,1000);
 </script>
