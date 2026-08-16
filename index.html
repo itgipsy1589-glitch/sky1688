@@ -28,7 +28,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 2rem 1rem;
+            padding: 0.5rem 1rem;
             background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 30%, #0a0a0f 60%, #1a1a0a 100%);
             position: relative;
             overflow: hidden;
@@ -64,14 +64,14 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
+            margin-bottom: 0.3rem;
             text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
         .hero p {
             font-size: 1.1rem;
             color: #ccc;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             max-width: 600px;
         }
 
@@ -80,7 +80,7 @@
             gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .badge {
@@ -115,7 +115,7 @@
             height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.3rem;
             border: 3px solid rgba(255, 215, 0, 0.5);
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
@@ -204,14 +204,14 @@
         .brand-type {
             color: #999;
             font-size: 1rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.3rem;
         }
 
         .bonus-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .bonus-item {
@@ -237,7 +237,7 @@
 
         .brand-features {
             list-style: none;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
         }
 
         .brand-features li {
@@ -299,12 +299,12 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1rem;
+            margin-bottom: 0.3rem;
         }
 
         .download-section p {
             color: #ccc;
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             max-width: 500px;
             margin-left: auto;
             margin-right: auto;
@@ -479,8 +479,8 @@
 
 
     <!-- SKY1688 & MKSKM Side by Side -->
-    <section class="section" style="padding: 1rem 1rem;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; max-width: 1000px; margin: 0 auto;">
+    <section class="section" style="padding: 0.3rem 1rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; align-items: start; max-width: 1000px; margin: 0 auto;">
             <div>
     <section class="section">
         <h2 class="section-title" style="color: #00bfff;">SKY1688 စလော့ဂိမ်း</h2>
@@ -525,7 +525,7 @@
 
             </div>
             <div>
-    <section class="section" style="padding-top: 0.5rem;">
+    <section class="section" style="padding-top: 0.2rem;">
 
         <div class="brand-card mkskm">
             <h3 class="brand-name">MKSKM ရှမ်းကိုးမီး</h3>
@@ -581,7 +581,7 @@
     </section>
 
     <!-- Thai 2D/3D Live Section - REDCOW Inspired -->
-    <section class="section" style="padding: 1rem 1.5rem; text-align: center;">
+    <section class="section" style="padding: 0.3rem 1.5rem; text-align: center;">
 
     <!-- 2D Section -->
     <div style="max-width:500px;margin:0 auto 20px;background:#111;border-radius:16px;overflow:hidden;border:1px solid #333;">
@@ -770,48 +770,7 @@ function updateCountdown(){
     String(hh).padStart(2,"0")+":"+String(mm).padStart(2,"0")+":"+String(ss).padStart(2,"0");
 }
 
-
-
-
-
-
-
-// Auto-updated Thai Lottery 3D data from Sanook.com
-const THAI_LOTTERY_3D = {
-  firstPrize: "004615",
-  threed: "615",
-  date: "2026-08-16",
-  back3: ["941", "154"],
-  back2: "41"
-};
-
-// Update 3D display with actual lottery data
-function updateThaiLottery3D() {
-  const el = document.getElementById("threed-live");
-  if(el) el.textContent = THAI_LOTTERY_3D.threed;
-  const drawEl = document.getElementById("threed-draw-time");
-  if(drawEl) drawEl.textContent = THAI_LOTTERY_3D.date + " Draw";
-  const statusEl = document.getElementById("threed-market-status");
-  if(statusEl) {
-    statusEl.textContent = "ထွက်ပြီး";
-    statusEl.style.background = "#2e7d32";
-  }
-  // Update history grid with first prize info
-  const gridEl = document.getElementById("threed-history-grid");
-  if(gridEl) {
-    gridEl.innerHTML = `<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;position:relative;grid-column:span 2;text-align:center;">
-      <div style="position:absolute;top:8px;right:8px;background:#e31837;color:#fff;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;">#1</div>
-      <div style="color:#888;font-size:11px;">${THAI_LOTTERY_3D.date}</div>
-      <div style="color:#888;font-size:10px;">15:30:00 Draw</div>
-      <div style="color:#e31837;font-size:48px;font-weight:900;letter-spacing:6px;margin-top:8px;">${THAI_LOTTERY_3D.threed}</div>
-      <div style="color:#666;font-size:11px;margin-top:5px;">ဆုကြီး: ${THAI_LOTTERY_3D.firstPrize}</div>
-    </div>`;
-  }
-}
 loadLiveData();
-setInterval(updateThaiLottery3D, 100);
-setTimeout(updateThaiLottery3D, 1500);
-setTimeout(updateThaiLottery3D, 1500);
 setInterval(loadLiveData,1000);
 setInterval(updateCountdown,1000);
 updateCountdown();
@@ -820,7 +779,7 @@ updateCountdown();
 
     <!-- Service Banner -->
     <!-- Service Banner -->
-    <div class="section" style="padding-top: 0.5rem;">
+    <div class="section" style="padding-top: 0.2rem;">
         <div class="service-banner">
             <div class="time">24/7</div>
             <div class="label">ဝန်ဆောင်မှု အချိန်ပြည့် ရရှိနိုင်ပါတယ်</div>
