@@ -774,38 +774,6 @@ function updateCountdown(){
 
 
 
-// Auto-updated Thai Lottery 3D data from Sanook.com
-const THAI_LOTTERY_3D = {
-  firstPrize: "004615",
-  threed: "615",
-  date: "2026-08-16",
-  back3: ["941", "154"],
-  back2: "41"
-};
-
-// Update 3D display with actual lottery data
-function updateThaiLottery3D() {
-  const el = document.getElementById("threed-live");
-  if(el) el.textContent = THAI_LOTTERY_3D.threed;
-  const drawEl = document.getElementById("threed-draw-time");
-  if(drawEl) drawEl.textContent = THAI_LOTTERY_3D.date + " Draw";
-  const statusEl = document.getElementById("threed-market-status");
-  if(statusEl) {
-    statusEl.textContent = "ထွက်ပြီး";
-    statusEl.style.background = "#2e7d32";
-  }
-  // Update history grid with first prize info
-  const gridEl = document.getElementById("threed-history-grid");
-  if(gridEl) {
-    gridEl.innerHTML = `<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:15px;position:relative;grid-column:span 2;text-align:center;">
-      <div style="position:absolute;top:8px;right:8px;background:#e31837;color:#fff;font-size:10px;font-weight:bold;padding:2px 6px;border-radius:4px;">#1</div>
-      <div style="color:#888;font-size:11px;">${THAI_LOTTERY_3D.date}</div>
-      <div style="color:#888;font-size:10px;">15:30:00 Draw</div>
-      <div style="color:#e31837;font-size:48px;font-weight:900;letter-spacing:6px;margin-top:8px;">${THAI_LOTTERY_3D.threed}</div>
-      <div style="color:#666;font-size:11px;margin-top:5px;">ဆုကြီး: ${THAI_LOTTERY_3D.firstPrize}</div>
-    </div>`;
-  }
-}
 
 // Auto-updated Thai Lottery 3D data from Sanook.com
 const THAI_LOTTERY_3D = {
@@ -839,10 +807,8 @@ function updateThaiLottery3D() {
     </div>`;
   }
 }
-setTimeout(updateThaiLottery3D, 2000);
-setInterval(updateThaiLottery3D, 3000);
-
 loadLiveData();
+setTimeout(updateThaiLottery3D, 1500);
 setTimeout(updateThaiLottery3D, 1500);
 setInterval(loadLiveData,1000);
 setInterval(updateCountdown,1000);
